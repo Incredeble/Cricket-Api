@@ -1,25 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './Navbar'
+import MyCard from './MyCard'
+import {getMatches} from './Api'
+import { useState , useEffect } from 'react'
 
 function App() {
+
+  const [matches,setMatches] = useState([]);
+
+  useEffect(() => {
+    getMatches().then((data) => setMatches(data.matches)).catch((error) => console.log(error))
+  },[]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar/>
+      <h1>Welcome to my Live Score APi</h1>
+      {
+        matches.map((match) => ( <div ><MyCard key={match.unique_id} match={match} /></div>))
+      }  
     </div>
   );
-}
+} 
 
 export default App;
